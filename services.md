@@ -1,4 +1,4 @@
-1. api-gateway
+1. api-gateway : 8080
 2. eureka-server : 8761
 3. identity-service : 8081
 4. policy-service
