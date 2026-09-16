@@ -83,7 +83,6 @@ public class UserService {
 
                     AuthResponse response = AuthResponse.builder()
                             .token(token)
-                            .tokenType("Bearer")
                             .userId(String.valueOf(user.getUserId()))  // Long → String for JSON response
                             .email(user.getEmail())
                             .role(user.getRole())
