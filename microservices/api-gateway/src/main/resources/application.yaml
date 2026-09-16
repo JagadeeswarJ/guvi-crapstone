@@ -9,10 +9,17 @@ spring:
           enabled: true
           lower-case-service-id: true
       routes:
-        - id: identity-service
+        - id: identity-service-auth
           uri: lb://IDENTITY-SERVICE
           predicates:
             - Path=/api/v1/auth/**
+          filters:
+            - RewritePath=/api/v1/(?<segment>.*), /${segment}
+
+        - id: identity-service-users
+          uri: lb://IDENTITY-SERVICE
+          predicates:
+            - Path=/api/v1/users/**
           filters:
             - RewritePath=/api/v1/(?<segment>.*), /${segment}
 
@@ -66,7 +73,7 @@ eureka:
 
 app:
   jwt:
-    secret: 5367566B59703373367639792F423F4528482B4D6251655468576D5A71347437
+    secret: very-very-very-big-secret-that-you-cant-crack-not-in-a-billion-years-cause-its-256-bits-long
     issuer: identity-service
 
 management:
