@@ -1,3 +1,51 @@
 spring:
   application:
     name: identity-service
+
+  # R2DBC Reactive MySQL
+  r2dbc:
+    url: r2dbc:mysql://localhost:3306/auth_db
+    username: root
+    password: root
+
+  # Schema initialization (runs schema.sql on startup)
+  sql:
+    init:
+      mode: always
+      schema-locations: classpath:schema.sql
+
+server:
+  port: 8081
+
+# Eureka Discovery
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka/
+    register-with-eureka: true
+    fetch-registry: true
+  instance:
+    prefer-ip-address: true
+    instance-id: ${spring.application.name}:${server.port}
+
+# JWT Configuration
+app:
+  jwt:
+    secret: very-very-very-big-secret-that-you-cant-crack-not-in-a-billion-years-cause-its-256-bits-long  # 256-bit hex key (change in prod!)
+    expiration-ms: 18000000   # 1 hour in milliseconds
+    issuer: identity-service
+
+# Actuator
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info
+  endpoint:
+    health:
+      show-details: always
+
+logging:
+  level:
+    com.thehartford.identityservice: DEBUG
+    org.springframework.r2dbc: DEBUG
