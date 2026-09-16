@@ -1,0 +1,177 @@
+Stage,Persona,Action,Goal,Angular/Frontend,API/Endpoint,Microservice,Database
+1,Organizer,Register,Create account,Register Component,POST /auth/register,Identity Service,Auth DB
+2,Organizer,Login,Authenticate,Login Component,POST /auth/login,Identity Service,Auth DB
+3,Organizer,Create Event,Register event,Create Event Component,POST /events,Event Service,Event DB
+4,Organizer,View Events,View own events,My Events Component,GET /events/user/{id},Event Service,Event DB
+5,Organizer,View Event Details,Check event information,Event Details Component,GET /events/{id},Event Service,Event DB
+6,Organizer,Request Quote,Get premium estimate,Quote Component,POST /quotes,Policy Service,Policy DB
+7,Organizer,View Quote,Check underwriting status,Quotes Dashboard,GET /quotes/{id},Policy Service,Policy DB
+8,Organizer,Purchase Policy,Activate insurance,Payment Component,POST /payments,Utility Service,Utility DB
+9,Organizer,View Policies,View purchased policies,Policies Dashboard,GET /policies/user/{id},Policy Service,Policy DB
+10,Organizer,Download Policy,Access policy document,Policy Details Component,GET /policies/{id},Policy Service,Policy DB
+11,Organizer,Submit Claim,Report cancellation,Create Claim Component,POST /claims,Claims Service,Claims DB
+12,Organizer,Upload Evidence,Provide supporting documents,Claim Documents Component,POST /claims/{id}/documents,Claims Service,Claims DB
+13,Organizer,Track Claim,View claim status,Claims Dashboard,GET /claims/{id},Claims Service,Claims DB
+14,Organizer,View Settlement,Check approved amount,Settlement Component,GET /settlements/{claimId},Utility Service,Utility DB
+15,Organizer,Check Notifications,View updates,Notification Panel,GET /notifications/{userId},Utility Service,Utility DB
+,,,,,,,
+,,,,,,,
+,,,,,,,
+,,,,,,,
+Stage,Persona,Action,Goal,Angular/Frontend,API/Endpoint,Microservice,Database
+1,Underwriter,Login,Authenticate,Login Component,POST /auth/login,Identity Service,Auth DB
+2,Underwriter,View Pending Quotes,Review requests,Underwriter Dashboard,GET /quotes/pending,Policy Service,Policy DB
+3,Underwriter,View Event Details,Assess event risk,Quote Review Component,GET /events/{id},Event Service,Event DB
+4,Underwriter,View Risk Analysis,Evaluate risk score,Quote Review Component,GET /quotes/{id}/risk,Policy Service,Policy DB
+5,Underwriter,Modify Premium,Adjust pricing,Quote Review Component,PUT /quotes/{id}/premium,Policy Service,Policy DB
+6,Underwriter,Add Restrictions,Customize coverage,Quote Review Component,PUT /quotes/{id}/coverage,Policy Service,Policy DB
+7,Underwriter,Approve Quote,Allow policy issue,Underwriter Dashboard,PUT /quotes/{id}/approve,Policy Service,Policy DB
+8,Underwriter,Reject Quote,Decline coverage,Underwriter Dashboard,PUT /quotes/{id}/reject,Policy Service,Policy DB
+9,Underwriter,View Issued Policies,Monitor portfolio,Policy Dashboard,GET /policies,Policy Service,Policy DB
+,,,,,,,
+,,,,,,,
+Stage,Persona,Action,Goal,Angular/Frontend,API/Endpoint,Microservice,Database
+1,Claims Officer,Login,Authenticate,Login Component,POST /auth/login,Identity Service,Auth DB
+2,Claims Officer,View Claims Queue,Review new claims,Claims Dashboard,GET /claims/pending,Claims Service,Claims DB
+3,Claims Officer,View Claim Details,Investigate claim,Claim Review Component,GET /claims/{id},Claims Service,Claims DB
+4,Claims Officer,Verify Policy,Check coverage validity,Claim Review Component,GET /policies/{id},Policy Service,Policy DB
+5,Claims Officer,Review Documents,Validate evidence,Claim Review Component,GET /claims/{id}/documents,Claims Service,Claims DB
+6,Claims Officer,Request More Information,Obtain missing data,Claim Review Component,PUT /claims/{id}/request-info,Claims Service,Claims DB
+7,Claims Officer,Assign Adjuster,Request loss assessment,Claim Review Component,PUT /claims/{id}/assign-adjuster,Claims Service,Claims DB
+8,Claims Officer,Review Adjuster Report,Verify loss estimate,Assessment Review Component,GET /assessments/{id},Claims Service,Claims DB
+9,Claims Officer,Approve Claim,Approve payout,Claim Decision Component,PUT /claims/{id}/approve,Claims Service,Claims DB
+10,Claims Officer,Reject Claim,Deny claim,Claim Decision Component,PUT /claims/{id}/reject,Claims Service,Claims DB
+11,Claims Officer,Initiate Settlement,Trigger payout,Settlement Component,POST /settlements,Utility Service,Utility DB
+,,,,,,,
+,,,,,,,
+Stage,Persona,Action,Goal,Angular/Frontend,API/Endpoint,Microservice,Database
+1,Adjuster,Login,Authenticate,Login Component,POST /auth/login,Identity Service,Auth DB
+2,Adjuster,View Assigned Claims,Investigate losses,Adjuster Dashboard,GET /adjuster/claims,Claims Service,Claims DB
+3,Adjuster,Review Claim,Understand incident,Assessment Component,GET /claims/{id},Claims Service,Claims DB
+4,Adjuster,Review Documents,Validate financial proofs,Assessment Component,GET /claims/{id}/documents,Claims Service,Claims DB
+5,Adjuster,Review Event Information,Verify event details,Assessment Component,GET /events/{id},Event Service,Event DB
+6,Adjuster,Calculate Actual Loss,Estimate covered loss,Assessment Component,POST /assessments,Claims Service,Claims DB
+7,Adjuster,Submit Assessment,Recommend settlement amount,Assessment Component,PUT /assessments/{id}/submit,Claims Service,Claims DB
+,,,,,,,
+,,,,,,,
+Stage,Persona,Action,Goal,Angular/Frontend,API/Endpoint,Microservice,Database
+1,Admin,Login,Authenticate,Login Component,POST /auth/login,Identity Service,Auth DB
+2,Admin,Create User,Add employee accounts,User Management Component,POST /users,Identity Service,Auth DB
+3,Admin,Assign Roles,Grant permissions,User Management Component,PUT /users/{id}/roles,Identity Service,Auth DB
+4,Admin,View Users,Manage platform users,User Management Component,GET /users,Identity Service,Auth DB
+5,Admin,View Policies,Monitor underwriting activity,Admin Dashboard,GET /policies,Policy Service,Policy DB
+6,Admin,View Claims,Monitor claim activity,Admin Dashboard,GET /claims,Claims Service,Claims DB
+7,Admin,View Payments,Track premium collection,Payments Dashboard,GET /payments,Utility Service,Utility DB
+,,,,,,,
+,,,,,,,
+,,,,,,,
+,,,,,,,
+,,,,,,,
+Microservice,Database,Tables,,,,,
+Identity Service,auth_db,Users,,,,,
+Event Service,event_db,"Events, Venues",,,,,
+Policy Service,policy_db,"Quotes, Policies",,,,,
+Claims Service,claims_db,"Claims, Assessments",,,,,
+Utility Service,utility_db,"Payments, Notifications",,,,,
+,,,,,,,
+,,,,,,,
+,,,,,,,
+,,,,,,,
+Table,Schema,,,,,,
+Events,event_id (PK),,,,,,
+,organizer_id,,,,,,
+,event_name,,,,,,
+,event_type,,,,,,
+,event_date,,,,,,
+,venue_id,,,,,,
+,expected_revenue,,,,,,
+,status,,,,,,
+Venues,venue_id (PK),,,,,,
+,name,,,,,,
+,location,,,,,,
+,capacity,,,,,,
+,indoor_outdoor,,,,,,
+Users,user_id (PK),,,,,,
+,name,,,,,,
+,email,,,,,,
+,username,,,,,,
+,password,,,,,,
+,role,,,,,,
+Quotes,quote_id (PK),,,,,,
+,event_id,,,,,,
+,coverage_amount,,,,,,
+,premium_amount,,,,,,
+,risk_score,,,,,,
+,status,,,,,,
+,underwriter_id,,,,,,
+Policies,policy_id (PK),,,,,,
+,quote_id,,,,,,
+,policy_number,,,,,,
+,coverage_amount,,,,,,
+,premium_amount,,,,,,
+,status,,,,,,
+,issued_date,,,,,,
+Claims,claim_id (PK),,,,,,
+,policy_id,,,,,,
+,claim_reason,,,,,,
+,claim_amount,,,,,,
+,status,,,,,,
+,claims_officer_id,,,,,,
+Assessments,assessment_id (PK),,,,,,
+,claim_id,,,,,,
+,adjuster_id,,,,,,
+,verified_loss,,,,,,
+,recommended_payout,,,,,,
+,remarks,,,,,,
+Payments,payment_id (PK),,,,,,
+,policy_id,,,,,,
+,amount,,,,,,
+,status,,,,,,
+,payment_date,,,,,,
+Notifications,notification_id (PK),,,,,,
+,user_id,,,,,,
+,title,,,,,,
+,message,,,,,,
+,created_at,,,,,,
+,status,,,,,,
+,,,,,,,
+,,,,,,,
+,,,,,,,
+,,,,,,,
+,,,,,,,
+Stage,Persona,Action,Goal,Angular/Frontend Page,API/Endpoint,Microservice,Database
+1,Organizer,Register,Create account,Register Component,POST /auth/register,Identity Service,Auth DB
+2,Organizer,Login,Authenticate,Login Component,POST /auth/login,Identity Service,Auth DB
+3,Organizer,Create Event,Register event details,Create Event Component,POST /events,Event Service,Event DB
+4,Organizer,View Events,View owned events,My Events Component,GET /events/user/{userId},Event Service,Event DB
+5,Organizer,Request Quote,Get insurance pricing,Quote Request Component,POST /quotes,Policy Service,Policy DB
+6,Organizer,View Quote Status,Track underwriting review,Quotes Dashboard,GET /quotes/{quoteId},Policy Service,Policy DB
+7,Underwriter,View Pending Quotes,Review incoming requests,Underwriter Dashboard,GET /quotes/pending,Policy Service,Policy DB
+8,Underwriter,View Event Risk,Analyze event risk factors,Quote Details Component,GET /quotes/{quoteId}/risk,Policy Service,Policy DB
+9,Underwriter,Approve Quote,Allow policy creation,Underwriter Dashboard,PUT /quotes/{id}/approve,Policy Service,Policy DB
+10,Underwriter,Reject Quote,Decline risky event,Underwriter Dashboard,PUT /quotes/{id}/reject,Policy Service,Policy DB
+11,Underwriter,Modify Premium,Adjust premium manually,Quote Details Component,PUT /quotes/{id}/premium,Policy Service,Policy DB
+12,Organizer,View Approved Quote,Review final premium,Quotes Dashboard,GET /quotes/{id},Policy Service,Policy DB
+13,Organizer,Make Payment,Activate policy,Payment Component,POST /payments,Utility Service,Utility DB
+14,Organizer,Download Policy,Access policy document,Policies Dashboard,GET /policies/{id},Policy Service,Policy DB
+15,Organizer,View Notifications,Track activity,Notification Panel,GET /notifications/{userId},Utility Service,Utility DB
+16,Organizer,Report Cancellation,Start claim process,Claim Creation Component,POST /claims,Claims Service,Claims DB
+17,Organizer,Upload Documents,Provide evidence,Claim Documents Component,POST /claims/{id}/documents,Claims Service,Claims DB
+18,Organizer,Track Claim,Check progress,Claims Dashboard,GET /claims/{id},Claims Service,Claims DB
+19,Claims Officer,View New Claims,Review submitted claims,Claims Officer Dashboard,GET /claims/pending,Claims Service,Claims DB
+20,Claims Officer,Verify Coverage,Check policy eligibility,Claim Review Page,GET /claims/{id}/coverage,Claims Service,Claims DB
+21,Claims Officer,Request More Evidence,Gather additional proof,Claim Review Page,PUT /claims/{id}/request-info,Claims Service,Claims DB
+22,Claims Officer,Assign Adjuster,Get loss assessment,Claim Review Page,PUT /claims/{id}/assign-adjuster,Claims Service,Claims DB
+23,Adjuster,View Assigned Claims,Begin investigation,Adjuster Dashboard,GET /adjuster/claims,Claims Service,Claims DB
+24,Adjuster,Review Documents,Validate reported losses,Assessment Component,GET /claims/{id}/documents,Claims Service,Claims DB
+25,Adjuster,Calculate Real Loss,Estimate covered loss,Assessment Component,POST /assessments,Claims Service,Claims DB
+26,Adjuster,Submit Assessment,Recommend settlement,Assessment Component,PUT /assessments/{id}/submit,Claims Service,Claims DB
+27,Claims Officer,Review Assessment,Make final decision,Claims Officer Dashboard,GET /assessments/{id},Claims Service,Claims DB
+28,Claims Officer,Approve Claim,Approve payout,Claim Decision Component,PUT /claims/{id}/approve,Claims Service,Claims DB
+29,Claims Officer,Reject Claim,Deny invalid claim,Claim Decision Component,PUT /claims/{id}/reject,Claims Service,Claims DB
+30,Utility System,Generate Settlement,Simulate payout,Settlement Component,POST /settlements,Utility Service,Utility DB
+31,Utility System,Create Notification,Inform customer,Notification Service,POST /notifications,Utility Service,Utility DB
+32,Organizer,View Settlement,Check compensation,Claims Dashboard,GET /settlements/{claimId},Utility Service,Utility DB
+33,Admin,Create Employees,Manage internal users,User Management Component,POST /users,Identity Service,Auth DB
+34,Admin,Assign Roles,RBAC management,Role Management Component,PUT /users/{id}/roles,Identity Service,Auth DB
+35,Admin,View System Metrics,Monitor platform,Admin Dashboard,GET /dashboard/stats,Utility Service,Utility DB
