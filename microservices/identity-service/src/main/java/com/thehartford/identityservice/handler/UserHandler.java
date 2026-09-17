@@ -7,6 +7,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.server.ServerRequest;
 import org.springframework.web.reactive.function.server.ServerResponse;
@@ -16,7 +17,7 @@ import java.util.Map;
 
 /**
  * WebFlux functional handler for user profile endpoints.
- * Handles: get user by ID, get current authenticated user.
+ * Handles: get user by ID (ADMIN only), get current authenticated user.
  */
 @Slf4j
 @Component
@@ -26,24 +27,23 @@ public class UserHandler {
     private final UserService userService;
 
     // ──────────────────────────────────────────────────────────
-    // GET /api/v1/users/{userId}
+    // GET /users/{userId}  — ADMIN ONLY
     // ──────────────────────────────────────────────────────────
 
     /**
      * Get a user profile by their userId path variable.
-     * Requires a valid JWT in the Authorization header.
+     * Restricted to ADMIN role only.
+     *
+     * <p>The API Gateway validates the JWT and injects {@code X-User-Role} header.
+     * {@link com.thehartford.identityservice.security.TrustedHeadersSecurityFilter}
+     * converts that header into a Spring Security {@code Authentication} so that
+     * {@code @PreAuthorize} can enforce role checks reactively.
      *
      * @param request the incoming ServerRequest
-     * @return 200 OK with UserResponse, or 404 if not found
+     * @return 200 OK with UserResponse, 403 if not ADMIN, or 404 if not found
      */
+    @PreAuthorize("hasRole('ADMIN')")
     public Mono<ServerResponse> getUserById(ServerRequest request) {
-        // Guard: JWT must be present
-        Claims claims = JwtAuthWebFilter.getClaimsFromExchange(request.exchange());
-        if (claims == null) {
-            return ServerResponse.status(HttpStatus.UNAUTHORIZED)
-                    .bodyValue(Map.of("error", "Authentication required"));
-        }
-
         String userId = request.pathVariable("userId");
 
         return userService.getUserById(userId)
@@ -57,7 +57,7 @@ public class UserHandler {
     }
 
     // ──────────────────────────────────────────────────────────
-    // GET /api/v1/users/me
+    // GET /users/me
     // ──────────────────────────────────────────────────────────
 
     /**
